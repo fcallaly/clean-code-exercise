@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  docker-mysql:
+    image: mysql:latest
+    volumes:
+      - ../src/main/resources/:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_DATABASE=shorturl
+
+  rest-shorturl-webapp:
+    image: restshorturl:dev
+    build:
+      context: ../
+      dockerfile: deploy/Dockerfile
+    depends_on:
+      - docker-mysql
+    ports:
+      - 8080:8080
+    environment:
+      - DB_HOST=docker-mysql
+      - DB_USERNAME=root
+      - DB_PASSWORD=rootpass
+      - DB_NAME=shorturl
