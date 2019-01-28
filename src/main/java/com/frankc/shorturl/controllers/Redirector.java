@@ -40,8 +40,8 @@ private ShortUrlService serv;
     public HttpEntity<Void> redirectByShortUrl(@PathVariable("shortUrlPath") final String shortUrlPath)throws ShortUrlNotFoundException {
         ShortUrl requestedShortUrl = null;
 
-        try { requestedShortUrl = serv.find(shortUrlPath); }
-        catch (NoSuchElementException ex) { System.out.println("Error");
+        requestedShortUrl = serv.find(shortUrlPath);
+        if (requestedShortUrl == null) { System.out.println("Error");
             throw new ShortUrlNotFoundException();
         }
         HttpHeaders responseHeaders = new HttpHeaders();
